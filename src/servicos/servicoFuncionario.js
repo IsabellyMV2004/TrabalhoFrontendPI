@@ -1,4 +1,4 @@
-const urlBase = 'https://backend-trabalho.vercel.app/funcionarios';
+const urlBase = 'https://backend-trabalho.vercel.app/cadastro_funcionarios';
 
 export async function gravarFuncionario(funcionario){
     const resposta = await fetch(urlBase,{
