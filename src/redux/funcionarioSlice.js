@@ -4,7 +4,7 @@ import axios from "axios"; // Para realizar as chamadas à API.
 import ESTADO from "./estados";
 
 // URL base da API
-const API_URL = "https://backend-trabalho.vercel.app/funcionarios";
+const API_URL = "https://backend-trabalho.vercel.app/cadastro_funcionarios";
 
 // Estado inicial
 const initialState = {
