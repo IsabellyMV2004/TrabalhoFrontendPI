@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { useState, createContext } from "react";
 import store from './redux/store';
 import { Provider } from "react-redux";
+import './App.css';
 
 export const ContextoUsuario=createContext();
 

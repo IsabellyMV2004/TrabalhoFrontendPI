@@ -6,6 +6,15 @@ body, html {
     background-image: "../";
 }
 
+.cadastro-background {
+    background-image: url('../../../sosFundo.jpg'); /* Substitua pelo caminho da sua imagem */
+    background-size: cover; /* Faz a imagem cobrir toda a tela */
+    background-position: center; /* Centraliza a imagem */
+    background-repeat: no-repeat; /* Evita repetição */
+    background-attachment: fixed; /* Fixa a imagem de fundo */
+    min-height: 100vh; /* Garante que o layout ocupe toda a altura da tela */
+}
+
 .cadastro-wrapper {
     display: flex;
     justify-content: center;

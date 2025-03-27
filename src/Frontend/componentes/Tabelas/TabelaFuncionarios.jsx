@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {  apagarFuncionario, buscarFuncionarios } from "../../redux/funcionarioReducer.js";
 import { useEffect } from "react";
 
-import ESTADO from "../../redux/estado.js";
+import ESTADO from "../../redux/estado.js"; 
 
 export default function TabelaFuncionarios(props) {
   const {estado, mensagem, listaDeFuncionarios} = useSelector(state => state.funcionario);
