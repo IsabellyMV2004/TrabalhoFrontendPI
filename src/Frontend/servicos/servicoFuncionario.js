@@ -1,4 +1,4 @@
-const urlBase = 'https://trabalho-backend-pi.vercel.app/funcionarios';
+const urlBase = 'http://localhost:4000/funcionarios';
 
 export async function gravarFuncionario(funcionario){
     const resposta = await fetch(urlBase,{

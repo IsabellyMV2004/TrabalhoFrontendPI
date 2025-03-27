@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { consultarFuncionario, excluirFuncionario, gravarFuncionario, alterarFuncionario } from "../servicos/servicoFuncionario";
+import { consultarFuncionario, excluirFuncionario, gravarFuncionario, alterarFuncionario } from "../servicos/servicoFuncionario.js";
 
 import ESTADO from "./estado.js";  
 
