@@ -1,29 +1,46 @@
-import { Button, Container, Table } from "react-bootstrap";
-import { excluirFuncionario } from "../../servicos/servicoFuncionario";
+import { Button, Container, Table, Spinner, Alert} from "react-bootstrap";
+import { useSelector, useDispatch } from "react-redux";
+import {  apagarFuncionario, buscarFuncionarios } from "../../redux/funcionarioReducer.js";
+import { useEffect } from "react";
+
+import ESTADO from "../../redux/estado.js";
 
 export default function TabelaFuncionarios(props) {
-    function editarFuncionario(funcionario) {
-        props.setModoEdicao(true);
-        props.setFuncionarioSelecionado(funcionario);
-        props.setExibirTabela(false);
-    }
+  const {estado, mensagem, listaDeFuncionarios} = useSelector(state => state.funcionario);
+  const despachante = useDispatch(); //consegue enviar uma action ao estado a partir da interface
 
-    function excluirFuncionarioFrontEnd(funcionario) {
-        if (window.confirm("Deseja realmente excluir o funcionario " + funcionario.nome + "?")) {
-            excluirFuncionario(funcionario).then((resposta) => {
-                if (resposta.status) { // Verifica se a exclusão foi bem-sucedida
-                    props.setListaDeFuncionarios(props.listaDeFuncionarios.filter((item) => {
-                        return item.codigo !== funcionario.codigo;
-                    }));
-                } else {
-                    window.alert("Não foi possível excluir o funcionario: " + resposta.mensagem);
-                }
-            }).catch((erro) => {
-                console.error("Erro ao excluir funcionario:", erro);
-                window.alert("Ocorreu um erro ao tentar excluir o funcionario.");
-            });
-        }
-    }
+  useEffect(()=>{
+      despachante(buscarFuncionarios());
+  },[despachante]); //ciclo de vida de atualização do componente
+
+  function editarFuncionario(funcionario){
+      props.setModoEdicao(true);
+      props.setFuncionarioSelecionado(funcionario);
+      props.setExibirTabela(false);
+  }
+
+  function excluirFuncionarioFrontEnd(funcionario){
+      if(window.confirm("Deseja realmente excluir o funcionario " + funcionario.nome)){
+          despachante(apagarFuncionario(funcionario)); //envia a action apagarProduto
+      }
+  }
+
+  if (estado === ESTADO.PENDENTE){
+      return (
+          <div>
+              <Spinner animation="border" role="status"></Spinner>
+              <Alert variant="primary">{ mensagem }</Alert>
+          </div>
+      );
+  }
+  else if (estado === ESTADO.ERRO){
+      return(
+          <div>
+              <Alert variant="danger">{ mensagem }</Alert>
+          </div>
+      );
+  }
+  else if (estado===ESTADO.OCIOSO){
 
     return (
         <>
@@ -72,6 +89,7 @@ export default function TabelaFuncionarios(props) {
             </Container>
         </>
     );
+  }
 }
 
 
