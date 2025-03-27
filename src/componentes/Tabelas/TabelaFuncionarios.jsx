@@ -5,7 +5,7 @@ export default function TabelaFuncionarios(props) {
     function editarFuncionario(funcionario) {
         props.setModoEdicao(true);
         props.setFuncionarioSelecionado(funcionario);
-        props.setExibirTabela(false);
+        props.setExibirTabela(false);zz
     }
 
     function excluirFuncionarioFrontEnd(funcionario) {
