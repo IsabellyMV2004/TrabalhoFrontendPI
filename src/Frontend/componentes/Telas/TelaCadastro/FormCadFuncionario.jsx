@@ -215,7 +215,7 @@ const despachante = useDispatch();
     
 }*/
 
-
+/*
 import React, { useState, useEffect } from "react";
 import { Button, Alert, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -323,4 +323,142 @@ export default function FormCadFuncionarios(props) {
                  </div>
              </Form>
     );
+}*/
+
+
+
+import React, { useState, useEffect } from "react";
+import { Button, Alert, Form } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { inserirFuncionario, atualizarFuncionario } from "../../../redux/funcionarioReducer";
+import ESTADO from "../../../redux/estado";
+import './FormCadFuncionario.css';
+
+export default function FormCadFuncionarios(props) {
+    const [nome, setNome] = useState(props.funcionarioSelecionado?.nome || "");
+    const [cpf, setCpf] = useState(props.funcionarioSelecionado?.cpf || "");
+    const [cargo, setCargo] = useState(props.funcionarioSelecionado?.cargo || "");
+    const [nivel, setNivel] = useState(props.funcionarioSelecionado?.nivel || "");
+    const [mensagem, setMensagem] = useState("");
+    const [formValidado, setFormValidado] = useState(false);
+
+    const { estado, mensagem: estadoMensagem } = useSelector((state) => state.funcionario);
+    const despachante = useDispatch();
+
+    useEffect(() => {
+        if (props.funcionarioSelecionado) {
+            setNome(props.funcionarioSelecionado.nome);
+            setCpf(props.funcionarioSelecionado.cpf);
+            setCargo(props.funcionarioSelecionado.cargo);
+            setNivel(props.funcionarioSelecionado.nivel);
+        }
+    }, [props.funcionarioSelecionado]);
+
+    // Função para lidar com a submissão do formulário
+    const manipularSubmissao = async (evento) => {
+        evento.preventDefault();
+        evento.stopPropagation();
+
+        const form = evento.currentTarget;
+        if (form.checkValidity()) {
+            if (!props.modoEdicao) {
+                // Cadastro de novo funcionário
+                const funcionario = { nome, cpf, cargo, nivel };
+                try {
+                    despachante(inserirFuncionario(funcionario));
+                    setMensagem("Funcionário cadastrado com sucesso!");
+                    limparCampos();
+                } catch (error) {
+                    console.error("Erro ao cadastrar:", error);
+                    setMensagem("Erro ao cadastrar o funcionário.");
+                }
+            } else {
+                // Edição de funcionário existente
+                const funcionarioEditado = { ...props.funcionarioSelecionado, nome, cpf, cargo, nivel };
+                try {
+                    despachante(atualizarFuncionario(funcionarioEditado));
+                    setMensagem("Funcionário atualizado com sucesso!");
+                    limparCampos();
+                } catch (error) {
+                    console.error("Erro ao atualizar:", error);
+                    setMensagem("Erro ao atualizar o funcionário.");
+                }
+            }
+        } else {
+            setFormValidado(true);
+        }
+    };
+
+    const limparCampos = () => {
+        setNome("");
+        setCpf("");
+        setCargo("");
+        setNivel("");
+        setFormValidado(false);
+    };
+
+    if (estado === ESTADO.PENDENTE) {
+        return (
+            <div>
+                <Alert variant="info">Carregando...</Alert>
+            </div>
+        );
+    }
+
+    return (
+        <Form noValidate validated={formValidado} onSubmit={manipularSubmissao}>
+            <div className="cadastro-wrapper">
+                <div className="cadastro-container">
+                    <h1>Cadastro de Funcionário</h1>
+
+                    <label>Nome</label>
+                    <input
+                        type="text"
+                        placeholder="Informe o nome completo"
+                        id="nome"
+                        name="nome"
+                        required
+                        value={nome}
+                        onChange={(e) => setNome(e.target.value)}
+                    />
+
+                    <label>CPF</label>
+                    <input
+                        type="text"
+                        placeholder="000.000.000-00"
+                        id="cpf"
+                        name="cpf"
+                        value={cpf}
+                        onChange={(e) => setCpf(e.target.value)}
+                        required
+                    />
+
+                    <label>Cargo</label>
+                    <input
+                        type="text"
+                        placeholder="Informe o cargo"
+                        id="cargo"
+                        name="cargo"
+                        value={cargo}
+                        onChange={(e) => setCargo(e.target.value)}
+                        required
+                    />
+
+                    <label>Nível de Acesso</label>
+                    <input
+                        type="text"
+                        placeholder="Informe o nível"
+                        id="nivel"
+                        name="nivel"
+                        value={nivel}
+                        onChange={(e) => setNivel(e.target.value)}
+                        required
+                    />
+
+                    <Button type="submit">{props.modoEdicao ? "Alterar" : "Confirmar"}</Button>
+                </div>
+            </div>
+        </Form>
+    );
 }
+
