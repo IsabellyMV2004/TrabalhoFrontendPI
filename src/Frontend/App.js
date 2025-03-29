@@ -1,5 +1,6 @@
 import TelaCadastroFuncionario from "./componentes/Telas/TelaCadastro/FormCadFuncionario";
-import TelaTabelaFuncionario from "./componentes/ListaFuncionario"
+import TelaTabelaFuncionario from "./componentes/ListaFuncionario";
+import TelaPrincipal from "./componentes/Telas/TelaPrincipal/telaPrincipal";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { useState, createContext } from "react";
 import store from './redux/store';
@@ -16,6 +17,7 @@ function App() {
             { //A ordem das rotas é importante 
             }
             <Routes>
+              <Route path="trabalhoFrontendPI/" element={<TelaPrincipal />} />
               <Route path="/cadastro_funcionarios" element={<TelaCadastroFuncionario />} />
               <Route path="/tabela_funcionarios" element={<TelaTabelaFuncionario />} />
             </Routes>
